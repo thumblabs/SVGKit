@@ -35,9 +35,7 @@
 
 - (void)dealloc {
 	CGPathRelease(_path);
-    [_fillPattern release];
     
-	[super dealloc];
 }
 
 - (void)loadDefaults {

@@ -58,7 +58,7 @@
 }
 
 + (id)documentWithContentsOfFile:(NSString *)aPath {
-	return [[[[self class] alloc] initWithContentsOfFile:aPath] autorelease];
+	return [[[self class] alloc] initWithContentsOfFile:aPath];
 }
 
 + (id)documentWithData:(NSData *)data {
@@ -79,7 +79,6 @@
 		_width = _height = 100;
 		
 		if (![self parseData:data]) {
-			[self release];
 			return nil;
 		}
 	}
@@ -97,10 +96,6 @@
 	return self;
 }
 
-- (void)dealloc {
-	[_version release];
-	[super dealloc];
-}
 
 - (BOOL)parseData:(NSData *)data {
 	NSError *error = nil;
@@ -109,12 +104,10 @@
 	
 	if (![parser parse:&error]) {
 		NSLog(@"Parser error: %@", error);
-		[parser release];
 		
 		return NO;
 	}
 	
-	[parser release];
 	
 	return YES;
 }
