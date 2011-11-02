@@ -27,8 +27,10 @@ typedef void (^SVGElementAggregationBlock)(SVGElement < SVGLayeredElement > * la
 
 + (id)documentNamed:(NSString *)name; // 'name' in mainBundle
 + (id)documentWithContentsOfFile:(NSString *)aPath;
++ (id)documentWithData:(NSData *)data;
 
 - (id)initWithContentsOfFile:(NSString *)aPath;
+- (id)initWithData:(NSData *)data;
 - (id)initWithFrame:(CGRect)frame;
 
 #if NS_BLOCKS_AVAILABLE
