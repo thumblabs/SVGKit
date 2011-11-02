@@ -82,7 +82,6 @@
 		}
 		else {
 			_strokeColor = SVGColorFromString(cvalue);
-			
 			if (!_strokeWidth)
 				_strokeWidth = 1.0f;
 		}
@@ -133,14 +132,14 @@
 	
 	if (_strokeWidth) {
 		shape.lineWidth = _strokeWidth;
-		shape.strokeColor = CGColorWithSVGColor(_strokeColor);
+		shape.strokeColor = CGColorWithSVGColor(_strokeColor).CGColor;
 	}
 	
 	if (_fillType == SVGFillTypeNone) {
 		shape.fillColor = nil;
 	}
 	else if (_fillType == SVGFillTypeSolid) {
-		shape.fillColor = CGColorWithSVGColor(_fillColor);
+		shape.fillColor = CGColorWithSVGColor(_fillColor).CGColor;
 	}
     
     if (nil != _fillPattern) {
