@@ -17,7 +17,7 @@
 
 @property (readwrite,nonatomic,assign) CGFloat x;
 @property (readwrite,nonatomic,assign) CGFloat y;
-@property (readwrite,nonatomic,retain) NSString* fontFamily;
+@property (readwrite,nonatomic,strong) NSString* fontFamily;
 @property (readwrite,nonatomic,assign) CGFloat fontSize;
 
 // TODO: class

@@ -94,7 +94,7 @@ CGImageRef SVGImageCGImage(SVGImageRef img)
         //    UIImage *image = [UIImage imageWithData:imageData];
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            layer.contents = (id)SVGImageCGImage(image);
+            layer.contents = (__bridge id)SVGImageCGImage(image);
         });
     });
 

@@ -30,8 +30,6 @@
 }
 
 - (void)dealloc {
-	self.popoverController = nil;
-	self.toolbar = nil;
 	self.detailItem = nil;
 	
 }
@@ -53,7 +51,7 @@
     [self.contentView removeFromSuperview];
     
 	SVGDocument *document = [SVGDocument documentNamed:[name stringByAppendingPathExtension:@"svg"]];
-	self.contentView = [[[SVGView alloc] initWithDocument:document] autorelease];
+	self.contentView = [[SVGView alloc] initWithDocument:document];
 	
 	if (_name) {
 		_name = nil;
@@ -129,11 +127,11 @@
     if (_layerExporter) {
         return;
     }
-    _layerExporter = [[[CALayerExporter alloc] initWithView:contentView] autorelease];
+    _layerExporter = [[CALayerExporter alloc] initWithView:contentView];
     _layerExporter.delegate = self;
     
     UITextView* textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 400, 400)];
-    UIViewController* textViewController = [[[UIViewController alloc] init] autorelease];
+    UIViewController* textViewController = [[UIViewController alloc] init];
     [textViewController setView:textView];
     UIPopoverController* exportPopover = [[UIPopoverController alloc] initWithContentViewController:textViewController];
     [exportPopover setDelegate:self];
@@ -162,13 +160,8 @@
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)pc
 {
-    [_exportText release];
     _exportText = nil;
-    
-    [_layerExporter release];
     _layerExporter = nil;
-    
-    [pc release];
 }
 
 

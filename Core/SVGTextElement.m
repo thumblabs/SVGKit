@@ -19,11 +19,6 @@
 @synthesize fontFamily = _fontFamily;
 @synthesize fontSize = _fontSize;
 
-- (void)dealloc {
-    [_fontFamily release];
-    [super dealloc];
-}
-
 - (void)parseAttributes:(NSDictionary *)attributes {
 	id value = nil;
     
@@ -74,9 +69,9 @@
                                          size:_fontSize];
     CGSize sizeOfTextRect = [textToDraw sizeWithFont:fontToDraw];
     
-    CATextLayer *label = [[[CATextLayer alloc] init] autorelease];
+    CATextLayer *label = [[CATextLayer alloc] init];
     [label setName:self.identifier];
-    [label setFont:_fontFamily];
+    [label setFont:(__bridge void *) _fontFamily];
     [label setFontSize:_fontSize];  
     [label setFrame:CGRectMake(_x, _y, sizeOfTextRect.width, sizeOfTextRect.height)];
     [label setString:textToDraw];

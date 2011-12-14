@@ -28,7 +28,7 @@ typedef void (^SVGElementAggregationBlock)(SVGElement < SVGLayeredElement > * la
 @property (weak, nonatomic, readonly) SVGDefsElement *defs;
 
 /*! from the SVG spec, each "g" tag in the XML is a separate "group of graphics things" */
-@property (nonatomic, retain) NSDictionary *graphicsGroups;
+@property (nonatomic, strong) NSDictionary *graphicsGroups;
 
 + (id)documentNamed:(NSString *)name; // 'name' in mainBundle
 + (id)documentWithContentsOfFile:(NSString *)aPath;

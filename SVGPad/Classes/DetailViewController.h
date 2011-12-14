@@ -16,11 +16,11 @@
     CALayerExporter* _layerExporter;
 }
 
-@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
-@property (retain, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, retain) IBOutlet SVGView *contentView;
+@property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, strong) IBOutlet SVGView *contentView;
 
-@property (nonatomic, retain) id detailItem;
+@property (nonatomic, strong) id detailItem;
 
 - (IBAction)animate:(id)sender;
 - (IBAction)exportLayers:(id)sender;

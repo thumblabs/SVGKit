@@ -50,15 +50,15 @@ static NSDictionary *elementMap;
 -(id)initWithData:(NSData *)data document:(SVGDocument *)document {
 	self = [super init];
 	if (self) {
-		_path = [aPath copy];
+        inputData = data;
 		_document = document;
 		_storedChars = [[NSMutableString alloc] init];
 		_elementStack = [[NSMutableArray alloc] init];
 		_failed = NO;
-		_graphicsGroups = [[NSMutableDictionary dictionary] retain];
+		_graphicsGroups = [NSMutableDictionary dictionary];
 		
 		if (!elementMap) {
-			elementMap = [[NSDictionary dictionaryWithObjectsAndKeys:
+			elementMap = [NSDictionary dictionaryWithObjectsAndKeys:
 						   [SVGCircleElement class], @"circle",
 						   [SVGDefsElement class], @"defs",
 						   [SVGDescriptionElement class], @"description",
@@ -71,7 +71,7 @@ static NSDictionary *elementMap;
 						   [SVGPolylineElement class], @"polyline",
 						   [SVGRectElement class], @"rect",
 						   [SVGTextElement class], @"text",
-						   [SVGTitleElement class], @"title", nil] retain];
+						   [SVGTitleElement class], @"title", nil];
 		}
 	}
     

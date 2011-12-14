@@ -32,7 +32,7 @@ typedef void (^layerTreeEnumerator)(CALayer* child);
 
 - (CAShapeLayer*) pathElementLayer;
 
-@property (readwrite,nonatomic,unsafe_unretained) id<SVGPathViewDelegate> delegate;
+@property (readwrite,nonatomic,weak) id<SVGPathViewDelegate> delegate;
 @property (weak, readonly) SVGPathElement* pathElement;
 
 #if NS_BLOCKS_AVAILABLE
