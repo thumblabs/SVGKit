@@ -23,6 +23,7 @@
 #import "SVGPolylineElement.h"
 #import "SVGRectElement.h"
 #import "SVGTitleElement.h"
+#import "SVGTextElement.h"
 
 @implementation SVGParser
 
@@ -49,29 +50,29 @@ static NSDictionary *elementMap;
 -(id)initWithData:(NSData *)data document:(SVGDocument *)document {
 	self = [super init];
 	if (self) {
-        inputData = data;
-        
+		_path = [aPath copy];
 		_document = document;
 		_storedChars = [[NSMutableString alloc] init];
 		_elementStack = [[NSMutableArray alloc] init];
 		_failed = NO;
+		_graphicsGroups = [[NSMutableDictionary dictionary] retain];
 		
-        //Removed the "IF" statement here.. for some reason it would cause subsequent renders to fail
-        //elementMap became messed up somehow
-        //#UNSURE
-        elementMap = [NSDictionary dictionaryWithObjectsAndKeys:
-                      [SVGCircleElement class], @"circle",
-                      [SVGDefsElement class], @"defs",
-                      [SVGDescriptionElement class], @"description",
-                      [SVGEllipseElement class], @"ellipse",
-                      [SVGGroupElement class], @"g",
-                      [SVGImageElement class], @"image",
-                      [SVGLineElement class], @"line",
-                      [SVGPathElement class], @"path",
-                      [SVGPolygonElement class], @"polygon",
-                      [SVGPolylineElement class], @"polyline",
-                      [SVGRectElement class], @"rect",
-                      [SVGTitleElement class], @"title", nil];
+		if (!elementMap) {
+			elementMap = [[NSDictionary dictionaryWithObjectsAndKeys:
+						   [SVGCircleElement class], @"circle",
+						   [SVGDefsElement class], @"defs",
+						   [SVGDescriptionElement class], @"description",
+						   [SVGEllipseElement class], @"ellipse",
+						   [SVGGroupElement class], @"g",
+						   [SVGImageElement class], @"image",
+						   [SVGLineElement class], @"line",
+						   [SVGPathElement class], @"path",
+						   [SVGPolygonElement class], @"polygon",
+						   [SVGPolylineElement class], @"polyline",
+						   [SVGRectElement class], @"rect",
+						   [SVGTextElement class], @"text",
+						   [SVGTitleElement class], @"title", nil] retain];
+		}
 	}
     
     return self;
@@ -130,6 +131,10 @@ static NSDictionary *elementMap;
 	SVGElement *element = [[elementClass alloc] initWithDocument:_document name:name];
 	[element parseAttributes:attributes];
 	
+    if( [element.localName isEqualToString:@"g"] && nil == element.identifier ) {
+        element.identifier = [[NSProcessInfo processInfo] globallyUniqueString];
+    }
+    
 	[_elementStack addObject:element];
 	
 	if ([elementClass shouldStoreContent]) {
@@ -154,8 +159,12 @@ static void startElementSAX (void *ctx, const xmlChar *localname, const xmlChar 
 }
 
 - (void)handleEndElement:(NSString *)name {
+	
 	if ([name isEqualToString:@"svg"]) {
 		[_elementStack removeObject:_document];
+		
+		/*! Add the dictionary of named "g" tags to the document, so applications can retrieve "named groups" from the SVG */
+		[_document setGraphicsGroups:_graphicsGroups];
 		return;
 	}
 	
@@ -170,6 +179,17 @@ static void startElementSAX (void *ctx, const xmlChar *localname, const xmlChar 
 	}
 	
 	[_elementStack removeLastObject];
+	
+	/*!
+	 SVG Spec attaches special meaning to the "g" tag - and applications
+	 need to be able to pull-out the "g"-tagged items later on
+	 */
+	if( [element.localName isEqualToString:@"g"] )
+	{
+		[_graphicsGroups setValue:element forKey:element.identifier];
+		
+		/*! ...we'll build up the dictionary, then add it to the document when the SVG tag is closed */
+	}
 	
 	SVGElement *parent = [_elementStack lastObject];
 	[parent addChild:element];
