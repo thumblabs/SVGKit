@@ -8,12 +8,13 @@
 @class SVGDocument;
 
 @interface SVGParser : NSObject {
-@private
+  @private
 	BOOL _failed;
 	BOOL _storingChars;
 	NSMutableString *_storedChars;
 	NSMutableArray *_elementStack;
 	__weak SVGDocument *_document;
+	NSMutableDictionary *_graphicsGroups;
     NSData *inputData;
 }
 
