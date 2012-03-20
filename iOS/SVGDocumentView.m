@@ -37,7 +37,9 @@
 		
 		self.rootLayer = [self layerWithElement:self.svg];
 		
-		[layersByElementId setObject:self.rootLayer forKey:svg.identifier];
+        if(svg.identifier) {
+            [layersByElementId setObject:self.rootLayer forKey:svg.identifier];            
+        }
 		NSLog(@"[%@] ROOT element id: %@ => layer: %@", [self class], svg.identifier, self.rootLayer);
     }
     return self;
